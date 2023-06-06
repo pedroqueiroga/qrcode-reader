@@ -14,7 +14,7 @@ import { TextService } from '../text.service';
 export class ReaderComponent implements AfterViewInit {
   title = 'qr-code-reader';
 
-  @ViewChild("action") qrcodeComponent!: NgxScannerQrcodeComponent;
+  @ViewChild("action") qrcodeComponent?: NgxScannerQrcodeComponent;
 
   constructor(
     private readonly router: Router,
@@ -22,7 +22,7 @@ export class ReaderComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    this.qrcodeComponent.start();
+    this.qrcodeComponent?.start();
   }
 
   async onEvent(event: ScannerQRCodeResult[], action: NgxScannerQrcodeComponent) {
