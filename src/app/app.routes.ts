@@ -15,4 +15,7 @@ export const routes: Routes = [
         mod.OnlyTextComponent
       ),
   },
+  {
+    path: '**', redirectTo: 'reader'
+  },
 ];

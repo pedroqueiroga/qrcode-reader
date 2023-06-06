@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TextService } from '../text.service';
 import { RouterLink } from '@angular/router';
@@ -10,7 +10,13 @@ import { RouterLink } from '@angular/router';
   templateUrl: './only-text.component.html',
   styleUrls: ['./only-text.component.scss']
 })
-export class OnlyTextComponent {
+export class OnlyTextComponent implements AfterViewInit {
+
+  @ViewChild('text') text?: ElementRef<HTMLSpanElement>;
+
+  ngAfterViewInit() {
+    this.text?.nativeElement.focus();
+  }
   
   constructor(public readonly textService: TextService) {}
 }
