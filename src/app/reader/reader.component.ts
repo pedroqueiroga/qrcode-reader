@@ -31,8 +31,7 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
     this.textService.text = '';
     this.subsink.add(
       this.qrcodeComponent?.devices.pipe(
-        filter((devices) => devices.length > 0),
-        take(1)
+        filter((devices) => devices.length > 0)
       ).subscribe((devices) => {
         console.log('hello world');
         const backFacingCamera =
