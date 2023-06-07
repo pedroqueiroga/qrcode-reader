@@ -25,13 +25,16 @@ export class ReaderComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.qrcodeComponent?.devices.pipe(
-      filter((devices) => devices.length > 0),
+      filter((devices) => devices.length > 1),
       take(1)
     ).subscribe((devices) => {
       const backFacingCamera =
         devices.find((device) => device.label.includes('back'));
       if (backFacingCamera && this.selectDevice) {
-        this.selectDevice.nativeElement.value = backFacingCamera.deviceId;
+        this.selectDevice.nativeElement.setAttribute(
+          'value',
+          backFacingCamera.deviceId
+        );
         this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
       }
     });
