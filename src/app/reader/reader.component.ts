@@ -27,11 +27,14 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit() {
+    this.qrcodeComponent?.start();
+    this.textService.text = '';
     this.subsink.add(
       this.qrcodeComponent?.devices.pipe(
         filter((devices) => devices.length > 0),
         take(1)
       ).subscribe((devices) => {
+        console.log('hello world');
         const backFacingCamera =
           devices.find((device) => device.label.includes('back'));
         if (backFacingCamera && this.selectDevice) {
@@ -44,7 +47,6 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
         }
       })
     );
-    this.qrcodeComponent?.start();
   }
 
   ngOnDestroy() {
