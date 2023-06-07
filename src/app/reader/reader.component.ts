@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { NgxScannerQrcodeComponent, NgxScannerQrcodeModule, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
+import { NgxScannerQrcodeComponent, NgxScannerQrcodeModule, ScannerQRCodeConfig, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
 import { TextService } from '../text.service';
 import { filter, Subscription, take } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,15 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
   title = 'qr-code-reader';
   selectedDevice = '';
   private readonly subsink = new Subscription();
+
+  config: ScannerQRCodeConfig = {
+    constraints: {
+      video: {
+        width: window.innerWidth,
+        facingMode: "environment"
+      },
+    }
+  };
 
   @ViewChild('action') qrcodeComponent?: NgxScannerQrcodeComponent;
   @ViewChild('selectDevice') selectDevice?: ElementRef<HTMLSelectElement>;
@@ -37,8 +46,10 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
         console.log('hello world');
         const backFacingCamera =
           devices.find((device) =>
-            (device.label.toLocaleLowerCase().includes('back') ||
-             device.label.toLocaleLowerCase().includes('traseira')));
+            (device.label.toLowerCase().includes('back') ||
+             device.label.toLowerCase().includes('rear') ||
+             device.label.toLowerCase().includes('environment') ||
+             device.label.toLowerCase().includes('traseira')));
         if (backFacingCamera && this.selectDevice) {
           this.qrcodeComponent?.playDevice(backFacingCamera.deviceId).subscribe(() => {
             this.selectedDevice = backFacingCamera.deviceId;
@@ -46,7 +57,7 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
         }
       }).add(() => {
         if (this.selectedDevice === '') {
-          this.selectedDevice = this.qrcodeComponent?.devices.value[0].deviceId ?? '';
+          this.selectedDevice = this.qrcodeComponent?.devices.value[this.qrcodeComponent.deviceIndexActive].deviceId ?? '';
         }
       })
     );

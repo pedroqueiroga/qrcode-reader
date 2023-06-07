@@ -10,4 +10,5 @@
           [value]="device.deviceId">{{device.label}}</option>
 </select>
 <ngx-scanner-qrcode #action="scanner"
-                    (event)="onDetectQRCodeEvent($event, action)"></ngx-scanner-qrcode>
+                    (event)="onDetectQRCodeEvent($event, action)"
+                    [config]="config"></ngx-scanner-qrcode>
