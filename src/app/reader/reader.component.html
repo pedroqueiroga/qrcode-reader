@@ -11,6 +11,7 @@
 </select>
 <ngx-scanner-qrcode #action="scanner"
                     (event)="onDetectQRCodeEvent($event, action)"></ngx-scanner-qrcode>
+<h3>{{ranAfterViewInit}}</h3>
 <h3>{{selectDevice.value}}</h3>
 <h3>[
   <h3 *ngFor="let device of action.devices.value">{{device.deviceId}},</h3>

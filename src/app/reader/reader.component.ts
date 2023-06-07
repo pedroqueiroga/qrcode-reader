@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 export class ReaderComponent implements AfterViewInit, OnDestroy {
   title = 'qr-code-reader';
   private readonly subsink = new Subscription();
+  ranAfterViewInit = 0;
 
   @ViewChild('action') qrcodeComponent?: NgxScannerQrcodeComponent;
   @ViewChild('selectDevice') selectDevice?: ElementRef<HTMLSelectElement>;
@@ -42,6 +43,7 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
         }
       })
     );
+    this.ranAfterViewInit++;
   }
 
   ngOnDestroy() {
