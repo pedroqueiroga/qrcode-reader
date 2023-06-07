@@ -36,7 +36,9 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
       ).subscribe((devices) => {
         console.log('hello world');
         const backFacingCamera =
-          devices.find((device) => device.label.includes('back'));
+          devices.find((device) =>
+            (device.label.toLocaleLowerCase().includes('back') ||
+             device.label.toLocaleLowerCase().includes('traseira')));
         if (backFacingCamera && this.selectDevice) {
           this.selectedDevice = backFacingCamera.deviceId;
           this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
