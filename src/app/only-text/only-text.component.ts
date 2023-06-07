@@ -16,6 +16,7 @@ export class OnlyTextComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.text?.nativeElement.focus();
+    this.text?.nativeElement.setAttribute("tabindex", "1");
   }
   
   constructor(public readonly textService: TextService) {}
