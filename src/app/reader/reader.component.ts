@@ -7,7 +7,7 @@ import { filter, Subscription, take } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-reader',
   standalone: true,
   imports: [CommonModule, NgxScannerQrcodeModule, FormsModule],
   templateUrl: './reader.component.html',
