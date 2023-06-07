@@ -1,5 +1,12 @@
-<select #select1 (change)="action.playDevice(select1.value)">
-  <option [value]="null" selected>Selecionar câmera</option>
-  <option *ngFor="let c of action.devices.value; let i = index" [value]="c.deviceId" [selected]="i == action.deviceIndexActive">{{c.label}}</option>
+<label for="select-device">Selecionar câmera:</label>
+<select id="select-device"
+        autofocus
+        tabindex="1"
+        name="Selecionar câmera"
+        #selectDevice
+        (change)="action.playDevice(selectDevice.value)">
+  <option *ngFor="let device of action.devices.value; let i = index"
+          [value]="device.deviceId"
+          [selected]="i == action.deviceIndexActive">{{device.label}}</option>
 </select>
 <ngx-scanner-qrcode #action="scanner" (event)="onEvent($event, action)"></ngx-scanner-qrcode>
