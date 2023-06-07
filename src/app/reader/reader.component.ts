@@ -32,7 +32,7 @@ export class ReaderComponent implements AfterViewInit {
         devices.find((device) => device.label.includes('back'));
       if (backFacingCamera && this.selectDevice) {
         this.selectDevice.nativeElement.value = backFacingCamera.deviceId;
-        this.selectDevice.nativeElement.dispatchEvent(new Event('change'));
+        this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
       }
     });
     this.qrcodeComponent?.start();
