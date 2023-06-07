@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxScannerQrcodeComponent, NgxScannerQrcodeModule, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
@@ -15,7 +15,8 @@ import { filter } from 'rxjs';
 export class ReaderComponent implements AfterViewInit {
   title = 'qr-code-reader';
 
-  @ViewChild("action") qrcodeComponent?: NgxScannerQrcodeComponent;
+  @ViewChild('action') qrcodeComponent?: NgxScannerQrcodeComponent;
+  @ViewChild('selectDevice') selectDevice?: ElementRef<HTMLSelectElement>;
 
   constructor(
     private readonly router: Router,
@@ -26,7 +27,8 @@ export class ReaderComponent implements AfterViewInit {
     this.qrcodeComponent?.devices.pipe(filter((devices) => devices.length > 0)).subscribe((devices) => {
       const backFacingCamera =
         devices.find((device) => device.label.includes('back'));
-      backFacingCamera && this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
+      backFacingCamera && this.selectDevice &&
+        (this.selectDevice.nativeElement.value = backFacingCamera.deviceId);
     });
     this.qrcodeComponent?.start();
   }
