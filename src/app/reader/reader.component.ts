@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NgxScannerQrcodeComponent, NgxScannerQrcodeModule, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
 import { TextService } from '../text.service';
 import { filter, take } from 'rxjs';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -35,8 +35,10 @@ export class ReaderComponent implements AfterViewInit {
       if (backFacingCamera && this.selectDevice) {
         this.selectedDevice = backFacingCamera.deviceId;
         this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
-      } else {
-        this.selectedDevice = devices[0].deviceId;
+      }
+    }).add(() => {
+      if (this.selectedDevice === '') {
+        this.selectedDevice = this.qrcodeComponent?.devices.value[0].deviceId ?? '';
       }
     });
     this.qrcodeComponent?.start();

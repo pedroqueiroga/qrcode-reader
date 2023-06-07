@@ -6,7 +6,7 @@
         #selectDevice
         [(ngModel)]="selectedDevice"
         (change)="action.playDevice(selectDevice.value)">
-  <option *ngFor="let device of action.devices.value; let i = index"
+  <option *ngFor="let device of action.devices.value"
           [value]="device.deviceId">{{device.label}}</option>
 </select>
 <ngx-scanner-qrcode #action="scanner"
