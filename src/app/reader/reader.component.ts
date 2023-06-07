@@ -15,8 +15,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class ReaderComponent implements AfterViewInit, OnDestroy {
   title = 'qr-code-reader';
+  selectedDevice = '';
   private readonly subsink = new Subscription();
-  ranAfterViewInit = 0;
 
   @ViewChild('action') qrcodeComponent?: NgxScannerQrcodeComponent;
   @ViewChild('selectDevice') selectDevice?: ElementRef<HTMLSelectElement>;
@@ -31,18 +31,22 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
     this.textService.text = '';
     this.subsink.add(
       this.qrcodeComponent?.devices.pipe(
-        filter((devices) => devices.length > 0)
+        filter((devices) => devices.length > 0),
+        take(1)
       ).subscribe((devices) => {
         console.log('hello world');
         const backFacingCamera =
           devices.find((device) => device.label.includes('back'));
         if (backFacingCamera && this.selectDevice) {
-          this.selectDevice.nativeElement.value = backFacingCamera.deviceId;
+          this.selectedDevice = backFacingCamera.deviceId;
           this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
+        }
+      }).add(() => {
+        if (this.selectedDevice === '') {
+          this.selectedDevice = this.qrcodeComponent?.devices.value[0].deviceId ?? '';
         }
       })
     );
-    this.ranAfterViewInit++;
   }
 
   ngOnDestroy() {
