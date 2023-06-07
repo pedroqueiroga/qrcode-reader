@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxScannerQrcodeComponent, NgxScannerQrcodeModule, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
 import { TextService } from '../text.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -22,9 +23,11 @@ export class ReaderComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    const backFacingCamera =
-      this.qrcodeComponent?.devices.value.find((device) => device.label.includes('back'));
-    backFacingCamera && this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
+    this.qrcodeComponent?.devices.pipe(filter((devices) => devices.length > 0)).subscribe((devices) => {
+      const backFacingCamera =
+        devices.find((device) => device.label.includes('back'));
+      backFacingCamera && this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
+    });
     this.qrcodeComponent?.start();
   }
 
