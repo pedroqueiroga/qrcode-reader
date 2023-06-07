@@ -4,16 +4,18 @@ import { Router } from '@angular/router';
 import { NgxScannerQrcodeComponent, NgxScannerQrcodeModule, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
 import { TextService } from '../text.service';
 import { filter, take } from 'rxjs';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, NgxScannerQrcodeModule],
+  imports: [CommonModule, NgxScannerQrcodeModule, FormsModule],
   templateUrl: './reader.component.html',
   styleUrls: ['./reader.component.scss']
 })
 export class ReaderComponent implements AfterViewInit {
   title = 'qr-code-reader';
+  selectedDevice = '';
 
   @ViewChild('action') qrcodeComponent?: NgxScannerQrcodeComponent;
   @ViewChild('selectDevice') selectDevice?: ElementRef<HTMLSelectElement>;
@@ -25,17 +27,16 @@ export class ReaderComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.qrcodeComponent?.devices.pipe(
-      filter((devices) => devices.length > 1),
+      filter((devices) => devices.length > 0),
       take(1)
     ).subscribe((devices) => {
       const backFacingCamera =
         devices.find((device) => device.label.includes('back'));
       if (backFacingCamera && this.selectDevice) {
-        this.selectDevice.nativeElement.setAttribute(
-          'value',
-          backFacingCamera.deviceId
-        );
+        this.selectedDevice = backFacingCamera.deviceId;
         this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
+      } else {
+        this.selectedDevice = devices[0].deviceId;
       }
     });
     this.qrcodeComponent?.start();

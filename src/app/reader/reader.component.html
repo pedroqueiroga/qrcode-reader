@@ -4,10 +4,10 @@
         tabindex="1"
         name="Selecionar câmera"
         #selectDevice
+        [(ngModel)]="selectedDevice"
         (change)="action.playDevice(selectDevice.value)">
   <option *ngFor="let device of action.devices.value; let i = index"
-          [value]="device.deviceId"
-          [selected]="i == action.deviceIndexActive">{{device.label}}</option>
+          [value]="device.deviceId">{{device.label}}</option>
 </select>
 <ngx-scanner-qrcode #action="scanner"
                     (event)="onDetectQRCodeEvent($event, action)"></ngx-scanner-qrcode>
