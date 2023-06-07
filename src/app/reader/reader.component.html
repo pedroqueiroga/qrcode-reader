@@ -4,8 +4,8 @@
         tabindex="1"
         name="Selecionar câmera"
         #selectDevice
-        (change)="action.playDevice(selectDevice.value)"
-        [(ngModel)]="selectedDevice">
+        [(ngModel)]="selectedDevice"
+        (change)="action.playDevice(selectDevice.value)">
   <option *ngFor="let device of action.devices.value; let i = index"
           [value]="device.deviceId">{{device.label}}</option>
 </select>
