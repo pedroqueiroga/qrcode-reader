@@ -40,8 +40,9 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
             (device.label.toLocaleLowerCase().includes('back') ||
              device.label.toLocaleLowerCase().includes('traseira')));
         if (backFacingCamera && this.selectDevice) {
-          this.selectedDevice = backFacingCamera.deviceId;
-          this.qrcodeComponent?.playDevice(backFacingCamera.deviceId);
+          this.qrcodeComponent?.playDevice(backFacingCamera.deviceId).subscribe(() => {
+            this.selectedDevice = backFacingCamera.deviceId;
+          });
         }
       }).add(() => {
         if (this.selectedDevice === '') {
@@ -58,9 +59,10 @@ export class ReaderComponent implements AfterViewInit, OnDestroy {
   onDetectQRCodeEvent(event: ScannerQRCodeResult[], action: NgxScannerQrcodeComponent) {
     const data = event[0].value;
     if (data) {
-      action.pause();
-      this.textService.text = data;
-      this.router.navigateByUrl('only-text');
+      action.stop().subscribe(() => {
+        this.textService.text = data;
+        this.router.navigateByUrl('only-text');
+      });
     }
   }
 }
